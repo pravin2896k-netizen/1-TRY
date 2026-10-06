@@ -1,0 +1,206 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theme Toggle with JSON Settings</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            color: #222;
+            transition: 0.3s;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 10px;
+            background-color: #f2f2f2;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #themeBtn {
+            background-color: #333;
+            color: white;
+        }
+
+        #resetBtn {
+            background-color: #777;
+            color: white;
+        }
+
+        #fontSize {
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        pre {
+            background-color: #ddd;
+            padding: 15px;
+            text-align: left;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        /* Dark mode */
+        body.dark-mode {
+            background-color: #121212;
+            color: white;
+        }
+
+        body.dark-mode .container {
+            background-color: #222;
+        }
+
+        body.dark-mode pre {
+            background-color: #333;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Dark / Light Theme</h1>
+
+        <p>
+            This page demonstrates theme settings using a
+            JavaScript object and JSON.
+        </p>
+
+        <button id="themeBtn">
+            Switch to Dark Mode
+        </button>
+
+        <br>
+
+        <label for="fontSize">Font Size:</label>
+
+        <select id="fontSize">
+            <option value="16">16px</option>
+            <option value="18">18px</option>
+            <option value="20">20px</option>
+            <option value="24">24px</option>
+        </select>
+
+        <br>
+
+        <button id="resetBtn">
+            Reset Settings
+        </button>
+
+        <h3>Current Settings JSON:</h3>
+
+        <pre id="jsonOutput"></pre>
+
+    </div>
+
+    <script>
+
+        // Default JSON settings
+        const defaultJSON = '{"theme":"light","fontSize":16}';
+
+        // Convert default JSON string into JavaScript object
+        let settings = JSON.parse(defaultJSON);
+
+        // Get HTML elements
+        const themeBtn = document.getElementById("themeBtn");
+        const fontSizeSelect = document.getElementById("fontSize");
+        const resetBtn = document.getElementById("resetBtn");
+        const jsonOutput = document.getElementById("jsonOutput");
+
+        // Apply settings to webpage
+        function applySettings() {
+
+            // Apply theme
+            if (settings.theme === "dark") {
+
+                document.body.classList.add("dark-mode");
+
+                themeBtn.textContent = "Switch to Light Mode";
+
+            } else {
+
+                document.body.classList.remove("dark-mode");
+
+                themeBtn.textContent = "Switch to Dark Mode";
+            }
+
+            // Apply font size
+            document.body.style.fontSize =
+                settings.fontSize + "px";
+
+            fontSizeSelect.value = settings.fontSize;
+
+            // Convert object to JSON
+            const jsonString = JSON.stringify(settings);
+
+            // Display JSON live
+            jsonOutput.textContent = jsonString;
+        }
+
+        // Theme toggle button
+        themeBtn.addEventListener("click", function() {
+
+            if (settings.theme === "light") {
+
+                settings.theme = "dark";
+
+            } else {
+
+                settings.theme = "light";
+            }
+
+            applySettings();
+        });
+
+        // Font size change
+        fontSizeSelect.addEventListener("change", function() {
+
+            settings.fontSize =
+                Number(fontSizeSelect.value);
+
+            applySettings();
+        });
+
+        // Reset settings
+        resetBtn.addEventListener("click", function() {
+
+            // Parse default JSON back into settings
+            settings = JSON.parse(defaultJSON);
+
+            applySettings();
+        });
+
+        // Show initial settings
+        applySettings();
+
+    </script>
+
+</body>
+</html>
+```
